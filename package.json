@@ -1,7 +1,8 @@
 {
   "name": "whistle.autotest",
   "version": "1.0.0",
-  "description": "",
+  "description": "自动化测试omega",
+  "main": "./dist/index.js",
   "scripts": {
     "dev": "tsc -w"
   },

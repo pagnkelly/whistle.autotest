@@ -1,2 +1,2 @@
-exports.uiServer = require('./uiServer');
-exports.statsServer = require('./statsServer');
+exports.uiServer = require('./uiServer').default;
+exports.statsServer = require('./statsServer').default;

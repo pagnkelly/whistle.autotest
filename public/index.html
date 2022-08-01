@@ -7,6 +7,64 @@
   <title>Whistle插件</title>
 </head>
 <body>
-  Whistle Plugin UI Demo. 
+  <textarea name="" id="filterText" cols="30" rows="10"></textarea>
+  <button id="confirm">确认</button>
+  <ul id="list">
+
+  </ul>
+  <script src="jquery.js"></script>
+  <script>
+    ;(function() {
+      var btn = $('#confirm');
+      var timer = null
+      btn.click(function() {
+        console.log($('#filterText').val().trim(), '11111')
+        $.post({
+          url: 'cgi-bin/set-text',
+          dataType: 'json',
+          data: {
+            filterText: $('#filterText').val().trim()
+          },
+          success: function(data) {
+            $('#list').empty()
+            data.filterArray.forEach(element => {
+              $('#list').append(`<p>${element}: 未触发</p>`)
+            });
+
+            timer = setInterval(() => {
+              getTrigger()
+            }, 3000)
+          },
+          error: function() {
+          }
+        });
+      })
+
+      function getTrigger () {
+        return $.get({
+          url: 'cgi-bin/get-trigger',
+          success: function(data) {
+            const { filterArray, triggerMap } = data;
+            $('#list').empty()
+            let notalltrigger = true
+            data.filterArray.forEach(element => {
+              if (!triggerMap[element]) {
+                notalltrigger = false
+              }
+              const t = triggerMap[element] ? '已触发' : '未触发'
+              $('#list').append(`<p>${element}: ${t}</p>`)
+            });
+            if (notalltrigger) {
+              clearInterval(timer)
+            }
+            console.log(data, 'dataaaaa')
+          },
+          error: function() {
+          }
+        })
+      }
+
+    })()
+  </script>
 </body>
 </html>
